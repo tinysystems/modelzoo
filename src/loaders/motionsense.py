@@ -17,7 +17,7 @@ TRIAL_CODES = {
         ACT_LABELS[5]: [5,13],
 }
 
-DATA_DIR = "data/MotionSense"
+DATA_DIR = "data/motion-sense/data"
 SETS = ["train", "valid", "test"]
 
 class MSLoader:
