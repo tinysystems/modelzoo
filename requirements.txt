@@ -1,0 +1,8 @@
+torch
+torchvision
+torchaudio
+hydra-core
+hydra-submitit-launcher
+pathlib
+tqdm
+dvc

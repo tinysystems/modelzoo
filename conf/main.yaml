@@ -1,0 +1,11 @@
+_target_: main.Main
+
+defaults:
+  # Main
+  - _self_
+  - exp: train
+  - model: ff
+  - loader: mnist
+  - optim: adam
+
+epochs: 50
