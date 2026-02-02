@@ -45,14 +45,3 @@ class CIFAR10Loader:
                 labels.append(torch.tensor(label))
             torch.save(torch.stack(images), self.data_dir/f"{dset}_tensors.pt") 
             torch.save(torch.stack(labels), self.data_dir/f"{dset}_labels.pt")
-
-    def get_config(self):
-        return {
-                "task": self.name,
-                "in_chan": self.in_chan,
-                "in_size": self.in_size,
-                "out_dim": self.out_dim,
-                "train_samples": len(self.train.dataset),
-                "valid_samples": len(self.valid.dataset),
-                "test_samples": len(self.test.dataset),
-                }

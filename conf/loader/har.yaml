@@ -1,3 +1,0 @@
-_target_: loaders.har.HARLoader
-
-batch_size: 512

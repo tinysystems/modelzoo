@@ -1,0 +1,3 @@
+_target_: loaders.motionsense.MSLoader
+
+batch_size: 512

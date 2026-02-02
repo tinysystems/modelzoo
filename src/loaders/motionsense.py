@@ -43,38 +43,16 @@ class MSLoader:
         whole_tset = MSSubset(self.data, "train")
         testset  = MSSubset(self.data, "test", whole_tset.mean, whole_tset.std)
 
-        if not (self.data_dir/"perm.pt").exists(): # For a fixed valid set every run (reporducibility)
-            perm = torch.randperm(len(whole_tset))
-            torch.save(perm, self.data_dir/"perm.pt")
-        perm = torch.load(self.data_dir/"perm.pt")
-
+        perm = torch.randperm(len(whole_tset))
         val_len = int(len(perm)*0.1) # 10% for validation
-
         trainset = Subset(whole_tset, perm[val_len:])
         validset = Subset(whole_tset, perm[:val_len])
 
-        tensor_missing = sum([(not (self.data_dir/f"{dset}_tensors.pt").exists() 
-                               or not (self.data_dir/f"{dset}_labels.pt").exists())
-                              for dset in SETS])
-        if tensor_missing:
-               self.get_tensors([trainset, validset, testset])
-
-        train_tensors, train_labels = (torch.load(self.data_dir/"train_tensors.pt"), 
-                                       torch.load(self.data_dir/"train_labels.pt"))
-        valid_tensors, valid_labels = (torch.load(self.data_dir/"valid_tensors.pt"), 
-                                       torch.load(self.data_dir/"valid_labels.pt"))
-        test_tensors, test_labels = (torch.load(self.data_dir/"test_tensors.pt"), 
-                                       torch.load(self.data_dir/"test_labels.pt"))
-
-        trains = TensorDataset(train_tensors, train_labels)
-        valids = TensorDataset(valid_tensors, valid_labels)
-        tests = TensorDataset(test_tensors, test_labels)
-
-        self.train = DataLoader(trains, batch_size=batch_size, shuffle=True, 
+        self.train = DataLoader(trainset, batch_size=batch_size, shuffle=True, 
                                 num_workers=num_workers)
-        self.valid = DataLoader(valids, batch_size=batch_size, shuffle=False, 
+        self.valid = DataLoader(validset, batch_size=batch_size, shuffle=False, 
                                 num_workers=num_workers)
-        self.test = DataLoader(tests, batch_size=batch_size, shuffle=False, 
+        self.test = DataLoader(testset, batch_size=batch_size, shuffle=False, 
                                num_workers=num_workers)
 
         self.sample_rate = 50  # Hz
@@ -92,19 +70,6 @@ class MSLoader:
                 labels.append(torch.tensor(label))
             torch.save(torch.stack(images), self.data_dir/f"{dset}_tensors.pt") 
             torch.save(torch.stack(labels), self.data_dir/f"{dset}_labels.pt")
-
-    def get_config(self):
-        return {
-                "task": self.name,
-                "sample_rate": self.sample_rate,
-                "n_datapoints": self.n_datapoints,
-                "in_chan": self.in_chan,
-                "in_size": self.in_size,
-                "out_dim": self.out_dim,
-                "train_samples": len(self.train.dataset),
-                "valid_samples": len(self.valid.dataset),
-                "test_samples": len(self.test.dataset),
-                }
 
     def get_ds_infos(self):
         """
