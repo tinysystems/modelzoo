@@ -43,12 +43,10 @@ class Train:
 
             logging.info("Epoch: {} | train acc: {:.4f}, train loss: {:.8f}, valid acc: {:.4f}, valid loss: {:.8f}, test acc: {:.4f}, test loss: {:.8f}".format(
                          epoch, train_acc, train_loss, val_acc, val_loss, test_acc, test_loss))
-            epoch_metrics = {
-                'train_acc': train_acc, 'train_loss': train_loss,
-                'val_acc': val_acc, 'val_loss': val_loss
-            }
-            for log_key in ['train_acc', 'train_loss', 'val_loss', 'val_acc']:
-                metrics[log_key].append(epoch_metrics[log_key])
+            metrics['train_acc'].append(train_acc)
+            metrics['train_loss'].append(train_loss)
+            metrics['val_acc'].append(val_acc)
+            metrics['val_loss'].append(val_loss)
             self.model.to(self.device)
 
         # Testing
