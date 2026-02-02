@@ -27,7 +27,6 @@ def train_epoch(model, optim, loader, criterion, epoch, device):
 def eval_model(model, loader, criterion, device):
     model.eval()
     correct, running_loss = 0, 0.0
-    sample_leaves, sample_preds = [], []
     for inputs, targets in loader:
         inputs, targets = inputs.to(device), targets.to(device)
         outputs = model(inputs)
@@ -37,7 +36,7 @@ def eval_model(model, loader, criterion, device):
         running_loss += criterion(outputs, targets).item()
         correct += (preds == targets).sum().item()
 
-    return running_loss/len(loader), correct/len(loader.dataset), 
+    return running_loss/len(loader), correct/len(loader.dataset)
 
 def train_epoch_ff(model, optim, loader, criterion, epoch, device):
     model.train()
@@ -64,7 +63,6 @@ def train_epoch_ff(model, optim, loader, criterion, epoch, device):
 def eval_model_ff(model, loader, criterion, device):
     model.eval()
     correct, running_loss = 0, 0.0
-    sample_leaves, sample_preds = [], []
     for inputs, targets in loader:
         inputs, targets = inputs.to(device), targets.to(device)
         outputs = model(inputs)

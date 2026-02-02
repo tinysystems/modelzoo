@@ -1,8 +1,10 @@
 import torch
+import torch.nn.functional as F
+import numpy as np
 import torchaudio
 from torchaudio.datasets import SPEECHCOMMANDS 
 from torch.utils.data import DataLoader
-from torchaudio.datasets.utils import _extract_tar, _load_waveform
+from torchaudio.datasets.utils import _load_waveform
 from pathlib import Path
 import logging
 

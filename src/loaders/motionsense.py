@@ -195,17 +195,15 @@ class MSSubset(Dataset):
 
     def time_series_to_section(self, dataset, num_act_labels, num_gen_labels, 
                                sliding_window_size, step_size_of_sliding_window, 
-                               standardize = False, mean = False, std = False):
+                               standardize = False, mean = None, std = None):
         data = dataset[: , 0:-(num_act_labels+num_gen_labels)]
         act_labels = dataset[: , -(num_act_labels+num_gen_labels):-(num_gen_labels)]
         gen_labels = dataset[: , -(num_gen_labels)]
-        mean = 0
-        std = 1
         
         if standardize:
             ## Standardize each sensor’s data to have a zero mean and unity standard deviation.
             ## As usual, we normalize test dataset by training dataset's parameters 
-            if mean == None:
+            if mean is None:
                 mean = data.mean(axis=0)
                 std = data.std(axis=0)
             data -= mean
@@ -241,23 +239,3 @@ class MSSubset(Dataset):
         gen_secs_labels = torch.tensor(gen_secs_labels[0:k], dtype=torch.long)
         
         return secs_data, act_secs_labels, gen_secs_labels, mean, std
-
-    def get_train_data(self):
-        sliding_window_size = 50 # 50 Equals to 1 second for MotionSense Dataset (it is on 50Hz samplig rate)
-        step_size_of_sliding_window = 10 
-        train_data, act_labels, gen_labels, mean, std = \
-                time_series_to_section(self.data.copy(), num_act_labels, num_gen_labels, 
-                                       sliding_window_size, step_size_of_sliding_window,
-                                       standardize = True)
-
-        test_data, act_test_labels, gen_test_labels, test_mean, test_std = \
-                time_series_to_section(test_ts.copy(), num_act_labels, num_gen_labels,
-                                       sliding_window_size, step_size_of_sliding_window,
-                                       standardize = True, 
-                                       mean = train_mean, std = train_std)
-
-    def get_test_data(self, mean, std):
-        data, act_labels, gen_labels, mean, std = time_series_to_section(
-                self.data.copy(), num_act_labels, num_gen_labels, sliding_window_size=50, 
-                step_size_of_sliding_window=10, standardize=True, mean=mean, std=std)
-        return data, act_labels, gen_labels, mean, std
