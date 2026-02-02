@@ -1,4 +1,6 @@
 __pycache__
 outputs
-data/
-!data/MotionSense.dvc
+data/MNIST/
+data/cifar-10-batches-py/
+data/cifar-10-python.tar.gz
+data/MotionSense/
