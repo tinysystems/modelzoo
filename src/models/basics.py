@@ -25,7 +25,10 @@ class CNN(nn.Module):
         self.conv2 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
         self.pool = nn.MaxPool2d(2, 2)
         self.relu = nn.ReLU()
-        self.fc = nn.Linear(32 * 7 * 7, out_features)  # assumes input 28x28
+        # Calculate FC input size dynamically based on input dimensions
+        # After two max pooling operations (each divides by 2), the spatial dimensions become in_dim/4
+        fc_input_size = 32 * (in_dim[0] // 4) * (in_dim[1] // 4)
+        self.fc = nn.Linear(fc_input_size, out_features)
 
     def forward(self, x):
         x = self.pool(self.relu(self.conv1(x)))
