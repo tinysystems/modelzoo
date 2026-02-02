@@ -1,6 +1,6 @@
 # TinySystems Model Zoo
 
-TinySystems Model Zoo is a repository containing a collection of IoT neural network models and datasets designed for TinyML applications. This repository aims to support research, development, and deployment of machine learning solutions on resource-constrained devices.
+TinySystems Model Zoo is a repository containing a collection of IoT neural network models and datasets designed for TinyML applications. This repository aims to support research, development, and deployment of machine learning solutions on resource-constrained devices..
 
 ## Getting the Repository
 
