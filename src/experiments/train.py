@@ -53,8 +53,7 @@ class Train:
 
         # Testing
         test_loss, test_acc = eval_model(self.model, self.loader.test, self.criterion, self.device)
-        logging.info("Test acc: {}, Test loss: {}".format(test_acc, test_loss))
-        logging.info("TEST | acc: {:.4f}, loss: {:.4f}, ".format(test_acc, test_loss))
+        logging.info("TEST | acc: {:.4f}, loss: {:.4f}".format(test_acc, test_loss))
         self.log_exp(metrics)
 
     def run(self, cfg) -> None:

@@ -203,7 +203,7 @@ class MSSubset(Dataset):
         if standardize:
             ## Standardize each sensor’s data to have a zero mean and unity standard deviation.
             ## As usual, we normalize test dataset by training dataset's parameters 
-            if mean == None:
+            if mean is None:
                 mean = data.mean(axis=0)
                 std = data.std(axis=0)
             data -= mean
