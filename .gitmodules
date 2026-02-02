@@ -1,0 +1,3 @@
+[submodule "data/motion-sense"]
+	path = data/motion-sense
+	url = https://github.com/mmalekzadeh/motion-sense.git
