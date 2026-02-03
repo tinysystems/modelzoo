@@ -29,7 +29,7 @@ class MSLoader:
         if not self.data_dir.exists():
             raise RuntimeError(
                     f"The dir {self.data_dir} doesn't exist. "
-                    "Please check the ``root`` path or run `dvc pull` to download it"
+                    "Please check the ``root`` path or run `git submodule update --init --recursive` to download it"
                     )
         # Extract zip files if not already extracted
         zips_to_extract = [f for f in self.data_dir.glob('*.zip') if not (self.data_dir / f.stem).exists()]
