@@ -4,4 +4,3 @@ torchaudio
 hydra-core
 hydra-submitit-launcher
 tqdm
-dvc
