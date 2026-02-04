@@ -26,6 +26,35 @@ IN_DIM = (28, 28)  # MNIST image dimensions
 OUT_FEATURES = 10  # 10 classes for MNIST
 
 
+def run_training_step(model: nn.Module, batch_size: int = BATCH_SIZE) -> float:
+    """
+    Run a single training step on the given model.
+    
+    Args:
+        model: The model to train
+        batch_size: Batch size for the synthetic input
+    
+    Returns:
+        The loss value from the training step
+    """
+    model.train()
+    
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters())
+    
+    # Create synthetic training batch
+    x = torch.randn(batch_size, IN_CHANNELS, *IN_DIM)
+    targets = torch.randint(0, OUT_FEATURES, (batch_size,))
+    
+    optimizer.zero_grad()
+    outputs = model(x)
+    loss = criterion(outputs, targets)
+    loss.backward()
+    optimizer.step()
+    
+    return loss.item()
+
+
 class TestFFModel:
     """Tests for the Feedforward (FF) model."""
 
@@ -43,24 +72,10 @@ class TestFFModel:
         assert output.shape == (BATCH_SIZE, OUT_FEATURES)
 
     def test_ff_training_step(self):
-        """Test a complete training step with FF model (simulates python src/main.py model=ff epochs=1)."""
+        """Test a single training step with FF model (tests the core of: python src/main.py model=ff epochs=1)."""
         model = FF(in_channels=IN_CHANNELS, in_dim=IN_DIM, width=64, out_features=OUT_FEATURES)
-        model.train()
-        
-        criterion = nn.CrossEntropyLoss()
-        optimizer = torch.optim.Adam(model.parameters())
-        
-        # Simulate one training batch
-        x = torch.randn(BATCH_SIZE, IN_CHANNELS, *IN_DIM)
-        targets = torch.randint(0, OUT_FEATURES, (BATCH_SIZE,))
-        
-        optimizer.zero_grad()
-        outputs = model(x)
-        loss = criterion(outputs, targets)
-        loss.backward()
-        optimizer.step()
-        
-        assert loss.item() >= 0
+        loss = run_training_step(model)
+        assert loss >= 0
 
 
 class TestCNNModel:
@@ -80,24 +95,10 @@ class TestCNNModel:
         assert output.shape == (BATCH_SIZE, OUT_FEATURES)
 
     def test_cnn_training_step(self):
-        """Test a complete training step with CNN model (simulates python src/main.py model=cnn epochs=1)."""
+        """Test a single training step with CNN model (tests the core of: python src/main.py model=cnn epochs=1)."""
         model = CNN(in_channels=IN_CHANNELS, in_dim=IN_DIM, out_features=OUT_FEATURES)
-        model.train()
-        
-        criterion = nn.CrossEntropyLoss()
-        optimizer = torch.optim.Adam(model.parameters())
-        
-        # Simulate one training batch
-        x = torch.randn(BATCH_SIZE, IN_CHANNELS, *IN_DIM)
-        targets = torch.randint(0, OUT_FEATURES, (BATCH_SIZE,))
-        
-        optimizer.zero_grad()
-        outputs = model(x)
-        loss = criterion(outputs, targets)
-        loss.backward()
-        optimizer.step()
-        
-        assert loss.item() >= 0
+        loss = run_training_step(model)
+        assert loss >= 0
 
 
 class TestFFFModel:
@@ -144,7 +145,7 @@ class TestFFFModel:
         assert output.shape == (BATCH_SIZE, OUT_FEATURES)
 
     def test_fff_training_step(self):
-        """Test a complete training step with FFF model (simulates python src/main.py model=fff epochs=1)."""
+        """Test a single training step with FFF model (tests the core of: python src/main.py model=fff epochs=1)."""
         model = FFF(
             in_channels=IN_CHANNELS,
             in_dim=IN_DIM,
@@ -152,19 +153,5 @@ class TestFFFModel:
             out_features=OUT_FEATURES,
             depth=4
         )
-        model.train()
-        
-        criterion = nn.CrossEntropyLoss()
-        optimizer = torch.optim.Adam(model.parameters())
-        
-        # Simulate one training batch
-        x = torch.randn(BATCH_SIZE, IN_CHANNELS, *IN_DIM)
-        targets = torch.randint(0, OUT_FEATURES, (BATCH_SIZE,))
-        
-        optimizer.zero_grad()
-        outputs = model(x)
-        loss = criterion(outputs, targets)
-        loss.backward()
-        optimizer.step()
-        
-        assert loss.item() >= 0
+        loss = run_training_step(model)
+        assert loss >= 0
