@@ -47,7 +47,11 @@ TinySystems Model Zoo is a repository containing a collection of IoT neural netw
 
 ## Configuration
 
-Check the `conf/` folder for options to vary models, datasets, and training hyperparameters:
+To see all available options and configurations, run:
+```bash
+python src/main.py --help
+```
+Also, check the `conf/` folder for options to vary models, datasets, and training hyperparameters:
 
 ```
 conf/
